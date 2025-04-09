@@ -48,7 +48,8 @@ export default function Navbar() {
               <XMarkIcon aria-hidden="true" className="hidden size-6 group-data-open:block" />
             </DisclosureButton>
           </div>
-          <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+          <div className="flex flex-1 items-center justify-center">
+            {/* Logo */}
             <div className="flex shrink-0 items-center">
               <Image 
                 height={60}
@@ -57,6 +58,11 @@ export default function Navbar() {
                 alt="Website Logo">
               </Image>
             </div>
+            {/* Heading Title */}
+            <div className="flex shrink-0 items-center text-black font-medium font-sans">
+              <h1>Personal Finance Tracker</h1>
+            </div>
+            {/* Buttons */}
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 {navigation.map((item) => (
@@ -65,7 +71,7 @@ export default function Navbar() {
                     href={item.href}
                     aria-current={item.current ? 'page' : undefined}
                     className={classNames(
-                      item.current ? 'bg-[#F5F8FF] text-[#155EEF]' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                      item.current ? 'bg-[#F5F8FF] text-[#155EEF]' : 'text-[#516778] hover:bg-[#F5F8FF] hover:text-[#155EEF]',
                       'rounded-md px-3 py-2 text-sm font-medium font-sans',
                     )}
                   >

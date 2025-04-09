@@ -1,5 +1,5 @@
 import Image from "next/image";
-import AddExpense from "./components/AddExpense";
+import AddComponent from "./components/AddComponent";
 
 const initPayments = [
   {
@@ -18,6 +18,6 @@ const initPayments = [
 
 export default function Home() {
   return (
-    <AddExpense paymentMethods={initPayments}/>
+    <AddComponent title="Income" paymentMethods={initPayments}/>
   );
 }

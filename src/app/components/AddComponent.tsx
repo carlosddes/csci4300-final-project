@@ -4,15 +4,16 @@ type PaymentMethod = {
 }
 
 interface ExpenseProps {
+    title: string,
     paymentMethods: PaymentMethod[]
 }
 
-const AddExpense = ({ paymentMethods }: ExpenseProps) => {
+const AddComponent = ({ title, paymentMethods }: ExpenseProps) => {
     return (
         <div className="flex items-center justify-center min-h-screen min-w-screen bg-red-700">
             <div className="flex justify-center bg-white h-[570px] w-80 rounded-[10px]">
                 <form className="relative w-4/5">
-                    <h1 className="font-semibold text-xl text-center mt-6 mb-4">Add Expense</h1>
+                    <h1 className="font-semibold text-xl text-center mt-6 mb-4">Add {title}</h1>
                     <label className="text-sm font-semibold">Title</label>
                     <br></br>
                     <input type="text" placeholder="Enter title" className="border border-[#A6BCDA] min-w-[256px] min-h-[36px] max-h-[36px] text-sm rounded-sm p-2"></input>
@@ -45,4 +46,4 @@ const AddExpense = ({ paymentMethods }: ExpenseProps) => {
     );
 };
 
-export default AddExpense;
+export default AddComponent;

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import AddComponent from "./components/AddComponent";
+import AddComponent from "../components/ui/AddComponent";
 
 const initPayments = [
   {

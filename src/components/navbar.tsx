@@ -52,15 +52,17 @@ export default function Navbar() {
           {/* Main Components */}
           <div className="relative flex h-16 items-center justify-between w-full">
             {/* Logo */}
-            <div className="flex shrink-0 items-center space-x-2">
-              <Image 
-                height={60}
-                width={60}
-                src="/FLogo.png" 
-                alt="Website Logo">
-              </Image>
+            <div className="flex shrink-0 items-center space-x-20 sm:space-x-2">
+              <div className="pl-6 sm:pl-0">
+                <Image 
+                  height={60}
+                  width={60}
+                  src="/FLogo.png" 
+                  alt="Website Logo">
+                </Image>
+              </div>
               {/* Heading Title */}
-              <div className="flex shrink-0 items-center text-black font-medium font-sans">
+              <div className="hidden lg:flex shrink-0 items-center text-black font-medium font-sans">
                 <h1>Personal Finance Tracker</h1>
               </div>
             </div>

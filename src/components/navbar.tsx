@@ -1,27 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 
-/*
-export function Navbar() {
-    let navContent;
-
-    <ul>
-        <li className="contents">
-            <Link href="/">
-                Overview
-            </Link>
-        </li>
-    </ul>
-
-    return (
-        <nav className="">
-            {navContent}
-        </nav>
-    );
-}
-*/
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 const navigation = [
   { name: 'Overview', href: '#', current: true },

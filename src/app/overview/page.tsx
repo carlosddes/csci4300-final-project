@@ -7,6 +7,10 @@ import Image from "next/image";
 
 export default function OverviewPage() {
     return (
+      <div>
+        <div className="grid grid-cols-2">
+          <h1 className="text-4xl p-3 pl-6 font-semibold">Hello, User!</h1>
+        </div>
         <div className="grid grid-cols-3 gap-6 m-6">
             {/* Text Cards */}
             <div>
@@ -35,5 +39,6 @@ export default function OverviewPage() {
             </ImageCard>
             </div>
         </div>
+      </div>
     );
 }

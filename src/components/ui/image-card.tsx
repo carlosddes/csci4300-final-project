@@ -22,7 +22,7 @@ export default function ImageCard({ imageSrc, imageAlt, imageBackground, childre
                         className="rounded-md"
                         />
                     </div>
-                    <div>
+                    <div className="font-sans">
                         {children}
                     </div>
                 </div>

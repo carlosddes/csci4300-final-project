@@ -2,16 +2,7 @@
 import { useState } from "react";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import TransactionCard from "./TransactionCard";
-
-  type Transaction = {
-    id: string,
-    title: string,
-    amount: string,
-    date: string,
-    description: string,
-    imageUrl: string,
-    paymentMethod: string,
-  };
+import { Transaction } from "@/types/types";
 
   interface TransactionViewProps {
     transactions: Transaction[]

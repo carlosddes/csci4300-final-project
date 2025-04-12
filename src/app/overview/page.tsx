@@ -1,24 +1,14 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import Card from "@/components/ui/card"
+"use client"
+
 import ImageCard from "@/components/ui/image-card"
 import TextCard from "@/components/ui/text-card";
-import Image from "next/image";
 import TransactionView from "@/components/ui/TransactionView";
+import { useState, useEffect } from "react";
+import AddComponent from "@/components/ui/AddComponent";
+import { Transaction } from "@/types/types";
 
-type Transaction = {
-  id: string,
-  title: string,
-  amount: string,
-  date: string,
-  description: string,
-  imageUrl: string,
-  paymentMethod: string,
-};
-
-const transactions: Transaction[] = [
+const initTransactions: Transaction[] = [
   {
-    id: "1",
     title: "Groceries",
     amount: "$154.45",
     date: "4/10/25",
@@ -27,7 +17,6 @@ const transactions: Transaction[] = [
     paymentMethod: "Visa 1234",
   },
   {
-    id: "2",
     title: "Movie",
     amount: "$20.12",
     date: "4/9/25",
@@ -37,7 +26,54 @@ const transactions: Transaction[] = [
   },
 ]
 
+const initPayments = [
+  {
+    cardNetwork: "Mastercard",
+    lastFourDigits: "1234"
+  },
+  {
+    cardNetwork: "Visa",
+    lastFourDigits: "6789"
+  },
+  {
+    cardNetwork: "Discover",
+    lastFourDigits: "1900"
+  }
+];
+
 export default function OverviewPage() {
+
+    const [transactions, setTransactions] = useState<Transaction[]>(initTransactions);
+    const [paymentMethods, setPaymentMethods] = useState(initPayments);
+    const [isIncomeVisible, setIsIncomeVisible] = useState(false);
+    const [isExpenseVisible, setIsExpenseVisible] = useState(false);
+
+    useEffect(() => {
+      if (isIncomeVisible || isExpenseVisible) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    }, [isIncomeVisible, isExpenseVisible])
+
+    function addTransaction(transaction: Transaction) {
+      setTransactions(transactions => [transaction, ...transactions]);
+      if (isIncomeVisible) {
+        setIsIncomeVisible(false);
+      } else if (isExpenseVisible) {
+        setIsExpenseVisible(false);
+      }
+    }
+
+    function toggleIncomeComponent() {
+      setIsIncomeVisible(!isIncomeVisible);
+    }
+
+    function toggleExpenseComponent() {
+      setIsExpenseVisible(!isExpenseVisible);
+    }
+
+
     return (
       <div>
         <div className="grid grid-cols-2">
@@ -55,15 +91,15 @@ export default function OverviewPage() {
               <TextCard heading="Expenses" number={3945.55} numColor="text-black" />
             </div>
             {/* Image Cards */}
-            <div>
-            <ImageCard imageSrc="/Plus.png" imageAlt="Plus icon" imageBackground="bg-green-200">
-              <h2 className="text-lg font-semibold text-gray-900">Add Income</h2>
-            </ImageCard>
+            <div onClick={toggleIncomeComponent}>
+              <ImageCard imageSrc="/Plus.png" imageAlt="Plus icon" imageBackground="bg-green-200">
+                <h2 className="text-lg font-semibold text-gray-900">Add Income</h2>
+              </ImageCard>
             </div>
-            <div>
-            <ImageCard imageSrc="/Minus.png" imageAlt="Minus icon" imageBackground="bg-red-200">
-              <h2 className="text-lg font-semibold text-gray-900">Add Expense</h2>
-            </ImageCard>
+            <div onClick={toggleExpenseComponent}>
+              <ImageCard imageSrc="/Minus.png" imageAlt="Minus icon" imageBackground="bg-red-200">
+                <h2 className="text-lg font-semibold text-gray-900">Add Expense</h2>
+              </ImageCard>
             </div>
             <div>
             <ImageCard imageSrc="/DollarSign.png" imageAlt="Dollar icon" imageBackground="bg-cyan-200">
@@ -73,6 +109,9 @@ export default function OverviewPage() {
             <div>
               <TransactionView transactions={transactions}/>
             </div>
+            { (isIncomeVisible || isExpenseVisible )&& <div className="bg-black opacity-75 w-screen h-screen top-0 left-0 fixed"></div>}
+              { isIncomeVisible && <AddComponent title="Income" paymentMethods={paymentMethods} addFunction={addTransaction} closeFunction={toggleIncomeComponent}></AddComponent>}
+              { isExpenseVisible && <AddComponent title="Expense" paymentMethods={paymentMethods} addFunction={addTransaction} closeFunction={toggleExpenseComponent}></AddComponent>}
         </div>
       </div>
     );

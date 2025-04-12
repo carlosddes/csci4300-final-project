@@ -2,7 +2,6 @@ import Image from "next/image"
 
 interface TransactionCardProps {
     transaction: {
-        id: string,
         title: string,
         amount: string,
         date: string,

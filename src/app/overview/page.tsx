@@ -3,11 +3,20 @@
 import ImageCard from "@/components/ui/image-card"
 import TextCard from "@/components/ui/text-card";
 import TransactionView from "@/components/ui/TransactionView";
+import ChartView from "@/components/ui/ChartView";
 import { useState, useEffect } from "react";
 import AddComponent from "@/components/ui/AddComponent";
 import { Transaction } from "@/types/types";
 
 const initTransactions: Transaction[] = [
+  {
+    title: "Rent",
+    amount: "$750.00",
+    date: "4/11/25",
+    description: "I paid my monthly rent!",
+    imageUrl: "https://www.realestatespreadsheets.com/wp-content/uploads/2024/04/rent-home-pros-cons.jpg",
+    paymentMethod: "Visa 1234",
+  },
   {
     title: "Groceries",
     amount: "$154.45",
@@ -106,7 +115,8 @@ export default function OverviewPage() {
               <h2 className="text-lg font-semibold text-gray-900">Set Savings Goal</h2>
             </ImageCard>
             </div>
-            <div>
+            <div className="flex flex-row gap-6">
+              <ChartView />
               <TransactionView transactions={transactions}/>
             </div>
             { (isIncomeVisible || isExpenseVisible )&& <div className="bg-black opacity-75 w-screen h-screen top-0 left-0 fixed"></div>}

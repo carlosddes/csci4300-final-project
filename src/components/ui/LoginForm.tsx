@@ -1,4 +1,6 @@
 import React from 'react';
+import Link from 'next/link';
+
 
 function LoginForm() {
   return (
@@ -42,12 +44,13 @@ function LoginForm() {
           </a>
         </div>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-        >
-          Login
-        </button>
+
+        <Link
+            href="/overview"
+            className="block w-full text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+            >
+            Login
+        </Link>
 
         <p className="text-center text-sm mt-4">
           Don’t have an account?{' '}

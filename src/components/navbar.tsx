@@ -1,4 +1,7 @@
+'use client';
+
 import Link from "next/link";
+import { useState } from "react";
 import Image from "next/image";
 
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
@@ -16,6 +19,13 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar() {
+
+  const [isLoggedIn,setIsLoggedIn ] = useState(false);
+
+  const handleLogin = () => {
+    setIsLoggedIn(prev => !prev);
+  }
+
   return (
     <Disclosure as="nav" className="bg-white">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -67,8 +77,22 @@ export default function Navbar() {
               </div>
             </div>
 
-            {/* Profile dropdown */}
-            <div className="absolute right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            {/* <!-- Login Register Buttons (Logged Out) --> */}
+            { 
+              !isLoggedIn && (
+                    <div className='block md:ml-6'>
+                      <div className='flex items-center'>
+                        <button onClick = {handleLogin} className='flex items-center text-white bg-[#155EEF] hover:bg-[#0F4ACC] hover:text-white rounded-md px-3 py-2 font-small font-sans'>
+                          <span>Login | Register</span>
+                        </button>
+                      </div>
+                    </div>
+              )
+            }
+
+            {/* <!-- Profile dropdown (Logged In) --> */}
+            { isLoggedIn && (
+              <div className="absolute right-0 flex items-end pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
               <Menu as="div" className="relative ml-3">
                 <div>
                   <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
@@ -102,7 +126,7 @@ export default function Navbar() {
                     </a>
                   </MenuItem>
                   <MenuItem>
-                    <a
+                    <a onClick = {handleLogin}
                       href="#"
                       className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
                     >
@@ -112,6 +136,7 @@ export default function Navbar() {
                 </MenuItems>
               </Menu>
             </div>
+            )}
           </div>
         </div>
       </div>

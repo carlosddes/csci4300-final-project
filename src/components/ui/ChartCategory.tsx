@@ -12,7 +12,7 @@ const ChartCategory = ({ categoryInfo }: ChartCategoryProps) => {
     return (
         <div>
             <div className="flex flex-row justify-left gap-6">
-                <FaCircle className={`text-[${categoryInfo.color}] w-6 h-6`} />
+                <FaCircle className={`${categoryInfo.color} w-6 h-6`} />
                 <p className="font-sans font-medium">{categoryInfo.category} - {categoryInfo.percentage}</p>
             </div>
         </div>

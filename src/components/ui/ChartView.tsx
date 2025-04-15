@@ -12,11 +12,11 @@ const ChartView = () => {
                     <Chart />
                 </div>
                 <div className="flex flex-col gap-2">
-                    <ChartCategory categoryInfo={ {category: "House", percentage: "41.35%", color: "#4E5BA6"}}/>
-                    <ChartCategory categoryInfo={ {category: "Credit Card", percentage: "21.51%", color: "#F04438"}}/>
-                    <ChartCategory categoryInfo={ {category: "Transportation", percentage: "13.47%", color: "#0BA5EC"}}/>
-                    <ChartCategory categoryInfo={ {category: "Groceries", percentage: "9.97%", color: "#17B26A"}}/>
-                    <ChartCategory categoryInfo={ {category: "Other", percentage: "13.70%", color: "#ECEFF2"}}/>
+                    <ChartCategory categoryInfo={ {category: "House", percentage: "41.35%", color: "text-[#4E5BA6]"}}/>
+                    <ChartCategory categoryInfo={ {category: "Credit Card", percentage: "21.51%", color: "text-[#F04438]"}}/>
+                    <ChartCategory categoryInfo={ {category: "Transportation", percentage: "13.47%", color: "text-[#0BA5EC]"}}/>
+                    <ChartCategory categoryInfo={ {category: "Groceries", percentage: "9.97%", color: "text-[#17B26A]"}}/>
+                    <ChartCategory categoryInfo={ {category: "Other", percentage: "13.70%", color: "text-[#ECEFF2]"}}/>
                 </div>
             </div>
         </div>

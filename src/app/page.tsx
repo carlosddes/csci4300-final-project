@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { useRouter } from "next/navigation";
 
 interface FeatureCardProps {
   imageUrl: string;
@@ -27,6 +28,9 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
 };
 
 export default function Home() {
+
+  const router = useRouter();
+
   return (
     
     <section className="flex flex-col items-center p-5 mx-auto my-0 w-full bg-white max-w-[1440px] max-md:max-w-[991px] max-sm:max-w-screen-sm">
@@ -43,6 +47,7 @@ export default function Home() {
             <button
               className="px-8 py-4 text-3xl font-medium text-white bg-blue-800 rounded-lg cursor-pointer max-md:px-6 max-md:py-3 max-md:text-3xl max-sm:px-5 max-sm:py-2.5 max-sm:text-2xl"
               aria-label="Get Started for Free"
+              onClick={() => router.push('/login')}
             >
               Get Started for Free
             </button>

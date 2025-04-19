@@ -8,10 +8,10 @@ import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuIt
 import { doLogout } from "@/app/actions";
 
 const navigation = [
-  { name: 'Overview', href: '#', current: true },
-  { name: 'Incomes', href: '#', current: false },
-  { name: 'Expenses', href: '#', current: false },
-  { name: 'Savings', href: '#', current: false },
+  { name: 'Overview', href: '/overview', current: false },
+  { name: 'Incomes', href: '/income', current: false },
+  { name: 'Expenses', href: '/expenses', current: false },
+  { name: 'Savings', href: '/savings', current: false },
 ]
 
 function classNames(...classes: string[]) {
@@ -32,11 +32,12 @@ interface NavbarProps {
 
 export default function Navbar({ session }: NavbarProps) {
 
-  const [isLoggedIn,setIsLoggedIn ] = useState(!!session?.user);
+  const [isLoggedIn,setIsLoggedIn] = useState(!!session?.user);
+  const [currentTab, setCurrentTab] = useState("Overview");
 
   useEffect(() => {
     setIsLoggedIn(!!session?.user);
-  }, [session]);
+  }, [session, currentTab]);
 
   const handleLogout = async () => {
     doLogout();
@@ -71,11 +72,12 @@ export default function Navbar({ session }: NavbarProps) {
                 {isLoggedIn && navigation.map((item) => (
                   <Link
                   key={item.name}
-                  href='/overview'
+                  href={item.href}
                   className={classNames(
-                    item.current ? 'bg-[#F5F8FF] text-[#155EEF]' : 'text-[#516778] hover:bg-[#F5F8FF] hover:text-[#155EEF]',
+                    (item.name == currentTab) ? 'bg-[#F5F8FF] text-[#155EEF]' : 'text-[#516778] hover:bg-[#F5F8FF] hover:text-[#155EEF]',
                     'rounded-md px-3 py-2 text-sm font-medium font-sans',
                   )}
+                  onClick={e => setCurrentTab(item.name)}
                 >
                   {item.name}
                 </Link>

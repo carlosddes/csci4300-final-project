@@ -3,6 +3,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import User from "./models/UserSchema";
+import connectMongoDB from "../lib/mongodb";
 
 export const {
     handlers: { GET, POST },
@@ -21,6 +22,7 @@ export const {
                 if (!credentials) return null;
 
                 try {
+                    await connectMongoDB();
                     const user = await User.findOne({ email: credentials.email }).lean();
                     if (user) {
                         const isMatch = await bcrypt.compare(

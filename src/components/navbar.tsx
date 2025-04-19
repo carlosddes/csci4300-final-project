@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { doLogout } from "@/app/actions";
@@ -32,6 +33,7 @@ interface NavbarProps {
 
 export default function Navbar({ session }: NavbarProps) {
 
+  const router = useRouter();
   const [isLoggedIn,setIsLoggedIn] = useState(!!session?.user);
   const [currentTab, setCurrentTab] = useState("Overview");
 
@@ -51,7 +53,7 @@ export default function Navbar({ session }: NavbarProps) {
           {/* Main Components */}
           <div className="relative flex h-16 items-center justify-between w-full">
             {/* Logo */}
-            <div className="flex shrink-0 items-center space-x-5 sm:space-x-2">
+            <div className="flex shrink-0 items-center space-x-5 sm:space-x-2 hover:cursor-pointer" onClick={e => router.push("/")}>
               <div className="pl-6 sm:pl-0">
                 <Image 
                   height={60}

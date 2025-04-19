@@ -1,11 +1,11 @@
 'use client';
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { doLogout } from "@/app/actions";
 
 const navigation = [
   { name: 'Overview', href: '#', current: true },
@@ -18,13 +18,30 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Navbar() {
+interface Session {
+  user?: {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  };
+}
 
-  const [isLoggedIn,setIsLoggedIn ] = useState(false);
+interface NavbarProps {
+  session: Session | null;
+}
 
-  const handleLogin = () => {
-    setIsLoggedIn(prev => !prev);
-  }
+export default function Navbar({ session }: NavbarProps) {
+
+  const [isLoggedIn,setIsLoggedIn ] = useState(!!session?.user);
+
+  useEffect(() => {
+    setIsLoggedIn(!!session?.user);
+  }, [session]);
+
+  const handleLogout = async () => {
+    doLogout();
+    setIsLoggedIn(false);
+  };
 
   return (
     <Disclosure as="nav" className="bg-white">
@@ -71,9 +88,9 @@ export default function Navbar() {
               !isLoggedIn && (
                     <div className='block md:ml-6'>
                       <div className='flex items-center'>
-                        <button onClick = {handleLogin} className='flex items-center text-white bg-[#155EEF] hover:bg-[#0F4ACC] hover:text-white rounded-md px-3 py-2 font-small font-sans'>
+                        <Link href="/login" className='flex items-center text-white bg-[#155EEF] hover:bg-[#0F4ACC] hover:text-white rounded-md px-3 py-2 font-small font-sans'>
                           <span>Login | Register</span>
-                        </button>
+                        </Link>
                       </div>
                     </div>
               )
@@ -115,7 +132,7 @@ export default function Navbar() {
                     </a>
                   </MenuItem>
                   <MenuItem>
-                    <a onClick = {handleLogin}
+                    <a onClick = {e => { e.preventDefault(); handleLogout();}}
                       href="/"
                       className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
                     >

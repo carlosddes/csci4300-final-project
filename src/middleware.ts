@@ -1,14 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
+import { authConfig } from "./auth.config";
+import NextAuth from "next-auth";
 
-export function middleware(request: NextRequest) {
-    const token = request.cookies.get('auth-token');
+const { auth } = NextAuth(authConfig);
 
-    if (!token) {
-        return NextResponse.redirect(new URL('/login', request.url));
+const middleware = async(request: NextRequest) => {
+    const { pathname } = request.nextUrl;
+    const session = await auth();
+    const isAuthenticated = !!session?.user;
+    console.log(isAuthenticated, pathname);
+
+    const publicPaths = ["/", "/login"];
+
+    if (!isAuthenticated && !publicPaths.includes(pathname)) {
+        return NextResponse.redirect(new URL("/login", request.url));
     }
 
     return NextResponse.next();
-}
+};
 
 export const config = {
     matcher: [
@@ -17,3 +26,5 @@ export const config = {
         "/income"
     ]
 }
+
+export default middleware;

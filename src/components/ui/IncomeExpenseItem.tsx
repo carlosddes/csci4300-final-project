@@ -15,7 +15,7 @@ const IncomeExpenseItem = ( {transaction}: IncomeExpenseItemProps) => {
                 <div className="flex flex-row gap-8">
                     <button className="bg-blue-200 rounded-md w-12">View</button>
                     <button className="bg-green-200 rounded-md w-12">Edit</button>
-                    <button className="bg-red-200 rounded-md w-12">Delete</button>
+                    <button className="bg-red-200 rounded-md w-14">Delete</button>
                 </div>
             </div>
         </div>

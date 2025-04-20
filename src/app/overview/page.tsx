@@ -35,25 +35,9 @@ const initTransactions: Transaction[] = [
   },
 ]
 
-const initPayments = [
-  {
-    cardNetwork: "Mastercard",
-    lastFourDigits: "1234"
-  },
-  {
-    cardNetwork: "Visa",
-    lastFourDigits: "6789"
-  },
-  {
-    cardNetwork: "Discover",
-    lastFourDigits: "1900"
-  }
-];
-
 export default function OverviewPage() {
 
     const [transactions, setTransactions] = useState<Transaction[]>(initTransactions);
-    const [paymentMethods, setPaymentMethods] = useState(initPayments);
     const [isIncomeVisible, setIsIncomeVisible] = useState(false);
     const [isExpenseVisible, setIsExpenseVisible] = useState(false);
 
@@ -120,8 +104,8 @@ export default function OverviewPage() {
               <TransactionView transactions={transactions}/>
             </div>
             { (isIncomeVisible || isExpenseVisible )&& <div className="bg-black opacity-75 w-screen h-screen top-0 left-0 fixed"></div>}
-              { isIncomeVisible && <AddComponent title="Income" paymentMethods={paymentMethods} addFunction={addTransaction} closeFunction={toggleIncomeComponent}></AddComponent>}
-              { isExpenseVisible && <AddComponent title="Expense" paymentMethods={paymentMethods} addFunction={addTransaction} closeFunction={toggleExpenseComponent}></AddComponent>}
+              { isIncomeVisible && <AddComponent title="Income" addFunction={addTransaction} closeFunction={toggleIncomeComponent}></AddComponent>}
+              { isExpenseVisible && <AddComponent title="Expense" addFunction={addTransaction} closeFunction={toggleExpenseComponent}></AddComponent>}
         </div>
       </div>
     );

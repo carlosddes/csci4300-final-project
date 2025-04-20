@@ -4,7 +4,7 @@ interface SavingsProps {
 
 const SavingsComponent = ({ closeFunction }: SavingsProps) => {
     return (
-        <div className="flex fixed top-[5vh] left-[40vw] z-1000 justify-center border bg-white h-[200px] w-80 rounded-[10px]">
+        <div className="flex fixed top-[30vh] left-[40vw] z-1000 justify-center border bg-white h-[200px] w-80 rounded-[10px]">
             <form className="relative w-4/5">
                 <h1 className="font-semibold text-xl text-center mt-6 mb-4">Set Savings Goal</h1>
                 <label className="text-sm font-semibold">Amount</label>

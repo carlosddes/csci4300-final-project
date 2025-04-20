@@ -6,21 +6,6 @@ import { useState, useEffect } from "react"
 import IncomeExpenseView from "@/components/ui/IncomeExpenseView";
 import { Transaction } from "@/types/types";
 
-const initPayments = [
-    {
-      cardNetwork: "Mastercard",
-      lastFourDigits: "1234"
-    },
-    {
-      cardNetwork: "Visa",
-      lastFourDigits: "6789"
-    },
-    {
-      cardNetwork: "Discover",
-      lastFourDigits: "1900"
-    }
-  ];
-
   const initTransactions: Transaction[] = [
     {
       title: "Rent",
@@ -76,7 +61,7 @@ export default function Home() {
               <div className="flex flex-row gap-6">
               </div>
               { isIncomeVisible && <div className="bg-black opacity-75 w-screen h-screen top-0 left-0 fixed"></div>}
-                { isIncomeVisible && <AddComponent title="Income" paymentMethods={initPayments} addFunction={handleAddIncome} closeFunction={toggleIncomeComponent}></AddComponent>}
+                { isIncomeVisible && <AddComponent title="Income" addFunction={handleAddIncome} closeFunction={toggleIncomeComponent}></AddComponent>}
           </div>
             <div>
                 <IncomeExpenseView transactions={initTransactions}/>

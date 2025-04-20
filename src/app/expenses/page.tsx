@@ -6,26 +6,11 @@ import { useState, useEffect } from "react"
 import IncomeExpenseView from "@/components/ui/IncomeExpenseView";
 import { Transaction } from "@/types/types";
 
-const initPayments = [
-    {
-      cardNetwork: "Mastercard",
-      lastFourDigits: "1234"
-    },
-    {
-      cardNetwork: "Visa",
-      lastFourDigits: "6789"
-    },
-    {
-      cardNetwork: "Discover",
-      lastFourDigits: "1900"
-    }
-  ];
-
   const initTransactions: Transaction[] = [
     {
       title: "Rent",
       amount: "$750.00",
-      date: "4/11/25",
+      date: "2025-04-11",
       description: "I paid my monthly rent!",
       imageUrl: "https://www.realestatespreadsheets.com/wp-content/uploads/2024/04/rent-home-pros-cons.jpg",
       paymentMethod: "Visa 1234",
@@ -33,7 +18,7 @@ const initPayments = [
     {
       title: "Groceries",
       amount: "$154.45",
-      date: "4/10/25",
+      date: "2025-04-10",
       description: "I bought weekly groceries.",
       imageUrl: "https://hips.hearstapps.com/hmg-prod/images/healthy-groceries-bag-66eaef810acf6.jpg?crop=0.7501082719792118xw:1xh;center,top&resize=1200:*",
       paymentMethod: "Visa 1234",
@@ -41,7 +26,7 @@ const initPayments = [
     {
       title: "Movie",
       amount: "$20.12",
-      date: "4/9/25",
+      date: "2025-04-09",
       description: "I went to watch the Minecraft movie with friends.",
       imageUrl: "https://images.techeblog.com/wp-content/uploads/2025/03/01093040/a-minecraft-movie-final-trailer.jpg",
       paymentMethod: "Visa 1234",
@@ -51,6 +36,14 @@ const initPayments = [
 export default function Home() {
 
     const [isExpenseVisible, setIsExpenseVisible] = useState(false);
+
+    useEffect(() => {
+      if (isExpenseVisible) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    }, [isExpenseVisible])
 
     function toggleExpenseComponent() {
         setIsExpenseVisible(!isExpenseVisible);
@@ -76,7 +69,7 @@ export default function Home() {
               <div className="flex flex-row gap-6">
               </div>
               { isExpenseVisible && <div className="bg-black opacity-75 w-screen h-screen top-0 left-0 fixed"></div>}
-                { isExpenseVisible && <AddComponent title="Expense" paymentMethods={initPayments} addFunction={handleAddExpense} closeFunction={toggleExpenseComponent}></AddComponent>}
+                { isExpenseVisible && <AddComponent title="Expense" addFunction={handleAddExpense} closeFunction={toggleExpenseComponent}></AddComponent>}
           </div>
             <div>
                 <IncomeExpenseView transactions={initTransactions}/>

@@ -12,7 +12,7 @@ const initTransactions: Transaction[] = [
   {
     title: "Rent",
     amount: "$750.00",
-    date: "4/11/25",
+    date: "2025-04-11",
     description: "I paid my monthly rent!",
     imageUrl: "https://www.realestatespreadsheets.com/wp-content/uploads/2024/04/rent-home-pros-cons.jpg",
     paymentMethod: "Visa 1234",
@@ -20,7 +20,7 @@ const initTransactions: Transaction[] = [
   {
     title: "Groceries",
     amount: "$154.45",
-    date: "4/10/25",
+    date: "2025-04-10",
     description: "I bought weekly groceries.",
     imageUrl: "https://hips.hearstapps.com/hmg-prod/images/healthy-groceries-bag-66eaef810acf6.jpg?crop=0.7501082719792118xw:1xh;center,top&resize=1200:*",
     paymentMethod: "Visa 1234",
@@ -28,32 +28,16 @@ const initTransactions: Transaction[] = [
   {
     title: "Movie",
     amount: "$20.12",
-    date: "4/9/25",
+    date: "2025-04-09",
     description: "I went to watch the Minecraft movie with friends.",
     imageUrl: "https://images.techeblog.com/wp-content/uploads/2025/03/01093040/a-minecraft-movie-final-trailer.jpg",
     paymentMethod: "Visa 1234",
   },
 ]
 
-const initPayments = [
-  {
-    cardNetwork: "Mastercard",
-    lastFourDigits: "1234"
-  },
-  {
-    cardNetwork: "Visa",
-    lastFourDigits: "6789"
-  },
-  {
-    cardNetwork: "Discover",
-    lastFourDigits: "1900"
-  }
-];
-
 export default function OverviewPage() {
 
     const [transactions, setTransactions] = useState<Transaction[]>(initTransactions);
-    const [paymentMethods, setPaymentMethods] = useState(initPayments);
     const [isIncomeVisible, setIsIncomeVisible] = useState(false);
     const [isExpenseVisible, setIsExpenseVisible] = useState(false);
 
@@ -120,8 +104,8 @@ export default function OverviewPage() {
               <TransactionView transactions={transactions}/>
             </div>
             { (isIncomeVisible || isExpenseVisible )&& <div className="bg-black opacity-75 w-screen h-screen top-0 left-0 fixed"></div>}
-              { isIncomeVisible && <AddComponent title="Income" paymentMethods={paymentMethods} addFunction={addTransaction} closeFunction={toggleIncomeComponent}></AddComponent>}
-              { isExpenseVisible && <AddComponent title="Expense" paymentMethods={paymentMethods} addFunction={addTransaction} closeFunction={toggleExpenseComponent}></AddComponent>}
+              { isIncomeVisible && <AddComponent title="Income" addFunction={addTransaction} closeFunction={toggleIncomeComponent}></AddComponent>}
+              { isExpenseVisible && <AddComponent title="Expense" addFunction={addTransaction} closeFunction={toggleExpenseComponent}></AddComponent>}
         </div>
       </div>
     );

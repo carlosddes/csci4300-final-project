@@ -27,23 +27,26 @@ export default function DonutChart() {
   }, []);
 
   const options = {
-    title: 'Income vs Expenses',
-    pieHole: 0.4,
+    backgroundColor: 'transparent',
+    pieHole: 0.6,
     legend: { position: 'bottom' },
     pieSliceText: 'value', // Show actual dollar values
     colors: ['#155eef', '#ea4335'],
   };
 
-  return (
-    <div className="flex justify-center items-center">
-      {loading ? (
+  return (      
+    <div className="flex flex-col justify-center items-center min-h-[75vh] min-w-[30.8vw] bg-opacity-0 rounded-xl border border-[#ECEFF2] shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)]">
+      <div className="flex flex-col rounded-t-xl ">
+          <h1 className="text-base font-semibold font-sans">Income vs Expenses</h1>
+      </div>
+    {loading ? (
         <p>Loading chart...</p>
       ) : (
         <Chart
           chartType="PieChart"
           data={data}
           options={options}
-          width={'600px'}
+          width={'500px'}
           height={'400px'}
         />
       )}

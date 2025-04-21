@@ -6,7 +6,7 @@ export interface IExpense extends Document {
     imageURL: string,
     amount: string,
     date: string,
-    paymentMehtod: string,
+    paymentMethod: string,
     userID: string,
 }
 
@@ -16,7 +16,7 @@ const expenseSchema = new Schema<IExpense>({
     imageURL: { type: String, required: true},
     amount: { type: String, required: true},
     date: { type: String, required: true},
-    paymentMehtod: { type: String, required: true},
+    paymentMethod: { type: String, required: true},
     userID: { type:String, required: true, unique: true}
 });
 

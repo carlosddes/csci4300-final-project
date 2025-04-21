@@ -1,24 +1,19 @@
-// lib/mongodb.ts
-import { MongoClient } from 'mongodb';
+import mongoose from "mongoose";
 
-if (!process.env.MONGODB_URI) {
-  throw new Error('Add Mongo URI to .env');
-}
+const connectMongoDB = async (): Promise<void> => {
+  try {
+    const uri = process.env.MONGODB_URI;
+    if (!uri) {
+      throw new Error("MONGODB_URI is not defined in environment variables.");
+    }
 
-const uri = process.env.MONGODB_URI;
-const options = {};
+    await mongoose.connect(uri, {
+      dbName: 'FinanceApp'
+    });
+    console.log("Connected to MongoDB.");
+  } catch (error) {
+    console.log("Error connecting to MongoDB:", (error as Error).message);
+  }
+};
 
-let client;
-let clientPromise: Promise<MongoClient>;
-
-declare global {
-  var _mongoClientPromise: Promise<MongoClient>;
-}
-
-if (!global._mongoClientPromise) {
-  client = new MongoClient(uri!, options);
-  global._mongoClientPromise = client.connect();
-}
-clientPromise = global._mongoClientPromise;
-
-export default clientPromise;
+export default connectMongoDB;

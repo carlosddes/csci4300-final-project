@@ -1,15 +1,14 @@
 "use client"
 import { useState } from "react";
-import { PaymentMethod, Transaction } from "@/types/types";
+import { Transaction } from "@/types/types";
 
 interface ExpenseProps {
     title: string,
-    paymentMethods: PaymentMethod[]
     addFunction: (transaction: Transaction) => void
     closeFunction: () => void
 }
 
-const AddComponent = ({ title, paymentMethods, addFunction, closeFunction }: ExpenseProps) => {
+const AddComponent = ({ title, addFunction, closeFunction }: ExpenseProps) => {
 
     const [transaction, setTransaction] = useState<Transaction>({
         title: "",
@@ -56,12 +55,7 @@ const AddComponent = ({ title, paymentMethods, addFunction, closeFunction }: Exp
                 <br className="mb-6"></br>
                 <label className="text-sm font-semibold">Payment Method</label>
                 <br></br>
-                <select defaultValue={"Select an option"} onChange={e => setTransaction({...transaction, paymentMethod: e.target.value})} className="border border-[#A6BCDA] min-w-[256px] min-h-[36px] max-h-[36px] text-sm rounded-sm p-2" required>
-                    <option disabled value="Select an option">Select an option</option>
-                    { paymentMethods.map((option) => {
-                        return <option key={option.lastFourDigits} value={option.cardNetwork + " " + option.lastFourDigits}>{option.cardNetwork + " " + option.lastFourDigits}</option>
-                    })}
-                </select>
+                <input type="text" placeholder="Enter payment method" onChange={e => setTransaction({...transaction, paymentMethod: e.target.value})} className="border border-[#A6BCDA] min-w-[256px] min-h-[36px] max-h-[36px] text-sm rounded-sm p-2" required></input>
                 <br className="mb-6"></br>
                 <label className="text-sm font-semibold">Image URL</label>
                 <br></br>

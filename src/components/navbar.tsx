@@ -1,30 +1,50 @@
 'use client';
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { doLogout } from "@/app/actions";
 
 const navigation = [
-  { name: 'Overview', href: '#', current: true },
-  { name: 'Incomes', href: '#', current: false },
-  { name: 'Expenses', href: '#', current: false },
-  { name: 'Savings', href: '#', current: false },
+  { name: 'Overview', href: '/overview', current: false },
+  { name: 'Incomes', href: '/income', current: false },
+  { name: 'Expenses', href: '/expenses', current: false },
+  { name: 'Savings', href: '/savings', current: false },
 ]
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Navbar() {
+interface Session {
+  user?: {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  };
+}
 
-  const [isLoggedIn,setIsLoggedIn ] = useState(false);
+interface NavbarProps {
+  session: Session | null;
+}
 
-  const handleLogin = () => {
-    setIsLoggedIn(prev => !prev);
-  }
+export default function Navbar({ session }: NavbarProps) {
+
+  const router = useRouter();
+  const [isLoggedIn,setIsLoggedIn] = useState(!!session?.user);
+  const [currentTab, setCurrentTab] = useState("Overview");
+
+  useEffect(() => {
+    setIsLoggedIn(!!session?.user);
+  }, [session, currentTab]);
+
+  const handleLogout = async () => {
+    doLogout();
+    setIsLoggedIn(false);
+  };
 
   return (
     <Disclosure as="nav" className="bg-white">
@@ -33,7 +53,7 @@ export default function Navbar() {
           {/* Main Components */}
           <div className="relative flex h-16 items-center justify-between w-full">
             {/* Logo */}
-            <div className="flex shrink-0 items-center space-x-5 sm:space-x-2">
+            <div className="flex shrink-0 items-center space-x-5 sm:space-x-2 hover:cursor-pointer" onClick={e => router.push("/")}>
               <div className="pl-6 sm:pl-0">
                 <Image 
                   height={60}
@@ -54,11 +74,12 @@ export default function Navbar() {
                 {isLoggedIn && navigation.map((item) => (
                   <Link
                   key={item.name}
-                  href='/overview'
+                  href={item.href}
                   className={classNames(
-                    item.current ? 'bg-[#F5F8FF] text-[#155EEF]' : 'text-[#516778] hover:bg-[#F5F8FF] hover:text-[#155EEF]',
+                    (item.name == currentTab) ? 'bg-[#F5F8FF] text-[#155EEF]' : 'text-[#516778] hover:bg-[#F5F8FF] hover:text-[#155EEF]',
                     'rounded-md px-3 py-2 text-sm font-medium font-sans',
                   )}
+                  onClick={e => setCurrentTab(item.name)}
                 >
                   {item.name}
                 </Link>
@@ -71,9 +92,9 @@ export default function Navbar() {
               !isLoggedIn && (
                     <div className='block md:ml-6'>
                       <div className='flex items-center'>
-                        <button onClick = {handleLogin} className='flex items-center text-white bg-[#155EEF] hover:bg-[#0F4ACC] hover:text-white rounded-md px-3 py-2 font-small font-sans'>
+                        <Link href="/login" className='flex items-center text-white bg-[#155EEF] hover:bg-[#0F4ACC] hover:text-white rounded-md px-3 py-2 font-small font-sans'>
                           <span>Login | Register</span>
-                        </button>
+                        </Link>
                       </div>
                     </div>
               )
@@ -99,23 +120,7 @@ export default function Navbar() {
                   className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
                 >
                   <MenuItem>
-                    <a
-                      href=""
-                      className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
-                    >
-                      Your Profile
-                    </a>
-                  </MenuItem>
-                  <MenuItem>
-                    <a
-                      href=""
-                      className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
-                    >
-                      Settings
-                    </a>
-                  </MenuItem>
-                  <MenuItem>
-                    <a onClick = {handleLogin}
+                    <a onClick = {e => { e.preventDefault(); handleLogout();}}
                       href="/"
                       className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
                     >

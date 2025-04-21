@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import AddComponent from "@/components/ui/AddComponent";
 import { Transaction } from "@/types/types";
 
+
 const initTransactions: Transaction[] = [
   {
     title: "Rent",

@@ -11,9 +11,14 @@ const middleware = async(request: NextRequest) => {
     console.log(isAuthenticated, pathname);
 
     const publicPaths = ["/", "/login"];
+    const blockedForLoggedIn = ["/login", "/signup"];
 
     if (!isAuthenticated && !publicPaths.includes(pathname)) {
         return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    if (isAuthenticated && blockedForLoggedIn.includes(pathname)) {
+        return NextResponse.redirect(new URL("/overview", request.url));
     }
 
     return NextResponse.next();
@@ -23,7 +28,9 @@ export const config = {
     matcher: [
         "/overview",
         "/expenses",
-        "/income"
+        "/income",
+        "/login",
+        "/signup"
     ]
 }
 

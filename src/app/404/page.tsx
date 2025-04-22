@@ -2,9 +2,6 @@
 import * as React from "react";
 import { useCallback } from "react";
 
-/**
- * 404 Error Page Component
- */
 const ErrorPage: React.FC = () => {
   const handleReturnHome = useCallback(() => {
     // Navigate to homepage
@@ -17,19 +14,15 @@ const ErrorPage: React.FC = () => {
         className="flex justify-center items-center mb-5"
         aria-labelledby="error-title"
       >
-        {/* Hidden accessible title for screen readers */}
         <h1 id="error-title" className="sr-only">
           404 - Page Not Found
         </h1>
-
-        <div>
-          {/* SVG 404 Error Icon with accessibility attributes */}
-          <div
-            role="img"
-            aria-label="404 The requested page cannot be found"
-          />
-        </div>
       </section>
+
+      <img
+        src="/error.png"
+        alt="404 ERROR: PAGE NOT FOUND"
+        />
 
       <section className="flex justify-center items-center mb-5">
         <button

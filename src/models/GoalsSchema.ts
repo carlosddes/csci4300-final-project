@@ -7,8 +7,8 @@ export interface IGoals extends Document {
 
 const goalsSchema = new Schema<IGoals>({
     amount: { type: String, required: true},
-    userID: { type:String, required: true, unique: true}
+    userID: { type:String, required: true}
 });
 
-const Goal: Model<IGoals> = mongoose.models.Goal || mongoose.model<IGoals>("Goals", goalsSchema);
+const Goal: Model<IGoals> = mongoose.models.Goal || mongoose.model<IGoals>("Goal", goalsSchema);
 export default Goal;

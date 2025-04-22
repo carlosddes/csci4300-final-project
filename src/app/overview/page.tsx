@@ -7,56 +7,54 @@ import ChartView from "@/components/ui/ChartView";
 import { useState, useEffect } from "react";
 import AddComponent from "@/components/ui/AddComponent";
 import { Transaction } from "@/types/types";
+import { useSession } from "next-auth/react";
+import SavingsComponent from "@/components/ui/SavingsComponent";
 
+interface TransactionsResponse {
+  Incomes: Transaction[],
+  Expenses: Transaction[]
+}
 
-const initTransactions: Transaction[] = [
-  {
-    title: "Rent",
-    amount: "$750.00",
-    date: "2025-04-11",
-    description: "I paid my monthly rent!",
-    imageUrl: "https://www.realestatespreadsheets.com/wp-content/uploads/2024/04/rent-home-pros-cons.jpg",
-    paymentMethod: "Visa 1234",
-  },
-  {
-    title: "Groceries",
-    amount: "$154.45",
-    date: "2025-04-10",
-    description: "I bought weekly groceries.",
-    imageUrl: "https://hips.hearstapps.com/hmg-prod/images/healthy-groceries-bag-66eaef810acf6.jpg?crop=0.7501082719792118xw:1xh;center,top&resize=1200:*",
-    paymentMethod: "Visa 1234",
-  },
-  {
-    title: "Movie",
-    amount: "$20.12",
-    date: "2025-04-09",
-    description: "I went to watch the Minecraft movie with friends.",
-    imageUrl: "https://images.techeblog.com/wp-content/uploads/2025/03/01093040/a-minecraft-movie-final-trailer.jpg",
-    paymentMethod: "Visa 1234",
-  },
-]
 
 export default function OverviewPage() {
 
-    const [transactions, setTransactions] = useState<Transaction[]>(initTransactions);
+    const session = useSession();
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [isIncomeVisible, setIsIncomeVisible] = useState(false);
     const [isExpenseVisible, setIsExpenseVisible] = useState(false);
+    const [isSavingsVisible, setIsSavingsVisible] = useState(false);
+    const [balance, setBalance] = useState("");
+    const [expenses, setExpenses] = useState("");
+    const [incomes, setIncomes] = useState("");
 
     useEffect(() => {
-      if (isIncomeVisible || isExpenseVisible) {
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.body.style.overflow = 'auto';
-      }
-    }, [isIncomeVisible, isExpenseVisible])
+      getUserTransactions();
+      console.log(session.data);
+    }, [balance, expenses])
 
-    function addTransaction(transaction: Transaction) {
-      setTransactions(transactions => [transaction, ...transactions]);
-      if (isIncomeVisible) {
-        setIsIncomeVisible(false);
-      } else if (isExpenseVisible) {
-        setIsExpenseVisible(false);
-      }
+    async function getUserTransactions() {
+      const url = `http://localhost:3000/api/transactions/${session.data?.user?.id}`;
+      const res = await fetch(url, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      const Utransactions = await res.json() as TransactionsResponse;
+      const incomes = Utransactions.Incomes;
+      const expenses = Utransactions.Expenses;
+      calculateSums(incomes, expenses);
+      setTransactions([...incomes, ...expenses].sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime()))
+    }
+
+    async function calculateSums(incomes: Transaction[], expenses: Transaction[]) {
+      let incomeSum = 0;
+      let expenseSum = 0;
+
+      incomes.forEach(income => incomeSum += parseFloat(income.amount));
+      expenses.forEach(expense => expenseSum += parseFloat(expense.amount));
+      setIncomes(incomeSum.toFixed(2));
+      setExpenses(expenseSum.toFixed(2));
+      setBalance((incomeSum - expenseSum).toFixed(2));
     }
 
     function toggleIncomeComponent() {
@@ -67,22 +65,25 @@ export default function OverviewPage() {
       setIsExpenseVisible(!isExpenseVisible);
     }
 
+    function toggleSavingsComponent() {
+      setIsSavingsVisible(!isSavingsVisible);
+    }
 
     return (
       <div>
         <div className="grid grid-cols-2">
-          <h1 className="text-4xl p-3 pl-6 font-semibold">Hello, User!</h1>
+          <h1 className="text-4xl p-3 pl-6 font-semibold">{`Hello, ${session.data?.user?.name}`}</h1>
         </div>
         <div className="grid grid-cols-3 gap-6 m-6">
             {/* Text Cards */}
             <div>
-              <TextCard heading="Balance" number={5502.45} numColor="text-[#155EEF]" />
+              <TextCard heading="Balance" number={balance} numColor="text-[#155EEF]" />
             </div>
             <div>
-              <TextCard heading="Incomes" number={9450.01} numColor="text-black" />
+              <TextCard heading="Incomes" number={incomes} numColor="text-black" />
             </div>
             <div>
-              <TextCard heading="Expenses" number={3945.55} numColor="text-black" />
+              <TextCard heading="Expenses" number={expenses} numColor="text-black" />
             </div>
             {/* Image Cards */}
             <div onClick={toggleIncomeComponent}>
@@ -95,18 +96,19 @@ export default function OverviewPage() {
                 <h2 className="text-lg font-semibold text-gray-900">Add Expense</h2>
               </ImageCard>
             </div>
-            <div>
+            <div onClick={toggleSavingsComponent}>
             <ImageCard imageSrc="/DollarSign.png" imageAlt="Dollar icon" imageBackground="bg-cyan-200">
               <h2 className="text-lg font-semibold text-gray-900">Set Savings Goal</h2>
             </ImageCard>
             </div>
             <div className="flex flex-row gap-6">
-              <ChartView />
+              <ChartView incomes={incomes} expenses={expenses}/>
               <TransactionView transactions={transactions}/>
             </div>
-            { (isIncomeVisible || isExpenseVisible )&& <div className="bg-black opacity-75 w-screen h-screen top-0 left-0 fixed"></div>}
-              { isIncomeVisible && <AddComponent title="Income" addFunction={addTransaction} closeFunction={toggleIncomeComponent}></AddComponent>}
-              { isExpenseVisible && <AddComponent title="Expense" addFunction={addTransaction} closeFunction={toggleExpenseComponent}></AddComponent>}
+            { (isIncomeVisible || isExpenseVisible || isSavingsVisible )&& <div className="bg-black opacity-75 w-screen h-screen top-0 left-0 fixed"></div>}
+              { isIncomeVisible && <AddComponent title="Income" addFunction={getUserTransactions} closeFunction={toggleIncomeComponent}></AddComponent>}
+              { isExpenseVisible && <AddComponent title="Expense" addFunction={getUserTransactions} closeFunction={toggleExpenseComponent}></AddComponent>}
+              { isSavingsVisible && <SavingsComponent closeFunction={toggleSavingsComponent}></SavingsComponent>}
         </div>
       </div>
     );

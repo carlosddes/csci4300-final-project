@@ -6,6 +6,7 @@ import { NextRequest } from "next/server";
 export async function POST(request: NextRequest) {
     const {amount, userID} = await request.json();
     await connectMongoDB();
+    await Goal.deleteMany({ userID: userID});
     await Goal.create({amount, userID});
     return NextResponse.json({messsage: "Goal added succesfully"}, {status: 201});
 }

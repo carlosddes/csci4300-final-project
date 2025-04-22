@@ -10,5 +10,5 @@ const goalsSchema = new Schema<IGoals>({
     userID: { type:String, required: true}
 });
 
-const Goal: Model<IGoals> = mongoose.models.Goal || mongoose.model<IGoals>("Goals", goalsSchema);
+const Goal: Model<IGoals> = mongoose.models.Goal || mongoose.model<IGoals>("Goal", goalsSchema);
 export default Goal;

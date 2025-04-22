@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import User from "./models/UserSchema";
 import connectMongoDB from "../lib/mongodb";
+import { userAgent } from "next/server";
 
 export const {
     handlers: { GET, POST },
@@ -34,6 +35,7 @@ export const {
                             return {
                                 id: user._id.toString(),
                                 email: user.email,
+                                name: user.name,
                             };
                         } else {
                             console.log("Email or Password is not correct");
@@ -55,9 +57,10 @@ export const {
           if (user?.id) token._id = user.id
           return token
         },
-        async session ({ session, token }) {
+        async session ({ session, token, user }) {
             if (token?._id) session.user.id = token._id as string        
             if (token?.sub) session.user.id = token.sub
+            if (user?.name) session.user.name = user.name
             return session
         },
     },

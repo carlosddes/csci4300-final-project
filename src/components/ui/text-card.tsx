@@ -3,7 +3,7 @@ import Image from "next/image"
 
 type TextCardProps = {
     heading: string;
-    number: number;
+    number: string;
     numColor: string;
   };
 

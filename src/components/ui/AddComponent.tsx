@@ -5,10 +5,11 @@ import { useSession } from "next-auth/react";
 
 interface ExpenseProps {
     title: string,
+    addFunction: () => void,
     closeFunction: () => void
 }
 
-const AddComponent = ({ title, closeFunction }: ExpenseProps) => {
+const AddComponent = ({ title, addFunction, closeFunction }: ExpenseProps) => {
 
     const session = useSession();
     const [transaction, setTransaction] = useState<Transaction>({
@@ -45,6 +46,7 @@ const AddComponent = ({ title, closeFunction }: ExpenseProps) => {
             },
             body: JSON.stringify(newTransaction)
         });
+        addFunction();
         clearComponent();
     }
 

@@ -12,16 +12,12 @@ export default function Home() {
         setIsSavingsVisible(!isSavingsVisible);
     }
     
-    function handleAddSavings() {
-        setIsSavingsVisible(false);
-    }
-
     return (
         <div>
             <div className="grid grid-cols-2 gap-12 m-6">
                 {/* Text Cards */}
                 <div>
-                    <TextCard heading="Savings Goal" number={9450.01} numColor="text-black" />
+                    <TextCard heading="Savings Goal" number="9450.01" numColor="text-black" />
                 </div>
                 {/* Image Cards */}
                 <div onClick={toggleSavingsComponent}>

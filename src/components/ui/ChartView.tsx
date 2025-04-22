@@ -2,19 +2,22 @@
 import { useEffect, useState } from 'react';
 import { Chart } from 'react-google-charts';
 
-export default function DonutChart() {
+interface ChartProps {
+  incomes: string,
+  expenses: string
+}
+
+export default function DonutChart( {incomes, expenses}: ChartProps ) {
   const [data, setData] = useState<Array<any>>([['Type', 'Amount']]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch('/api/chart-data');
-        const json = await res.json();
         setData([
           ['Type', 'Amount'],
-          ['Income', { v: json[1][1], f: `$${json[1][1].toFixed(2)}` }],
-          ['Expenses', { v: json[2][1], f: `$${json[2][1].toFixed(2)}` }],
+          ['Income', { v: parseFloat(incomes), f: `$${incomes}` }],
+          ['Expenses', { v: parseFloat(expenses), f: `$${expenses}` }],
         ]);
       } catch (error) {
         console.error('Error fetching chart data:', error);
@@ -24,7 +27,7 @@ export default function DonutChart() {
     }
 
     fetchData();
-  }, []);
+  }, [incomes, expenses]);
 
   const options = {
     backgroundColor: 'transparent',

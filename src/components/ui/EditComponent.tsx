@@ -14,8 +14,9 @@ const EditComponent = ({ editedTransaction, closeFunction }: ExpenseProps) => {
         amount: editedTransaction.amount,
         date: editedTransaction.date,
         description: editedTransaction.description,
-        imageUrl: editedTransaction.imageUrl,
-        paymentMethod: editedTransaction.paymentMethod
+        imageURL: editedTransaction.imageURL,
+        paymentMethod: editedTransaction.paymentMethod,
+        userID: editedTransaction.userID
     });
 
     function clearComponent() {
@@ -46,7 +47,7 @@ const EditComponent = ({ editedTransaction, closeFunction }: ExpenseProps) => {
                 <br className="mb-6"></br>
                 <label className="text-sm font-semibold">Image URL</label>
                 <br></br>
-                <input type="text" placeholder="Enter image url" value={transaction.imageUrl} onChange={e => setTransaction({...transaction, imageUrl: e.target.value})} className="border border-[#A6BCDA] min-w-[256px] min-h-[36px] max-h-[36px] text-sm rounded-sm p-2" required></input>
+                <input type="text" placeholder="Enter image url" value={transaction.imageURL} onChange={e => setTransaction({...transaction, imageURL: e.target.value})} className="border border-[#A6BCDA] min-w-[256px] min-h-[36px] max-h-[36px] text-sm rounded-sm p-2" required></input>
                 <br className="mb-6"></br>
                 <label className="text-sm font-semibold">Description</label>
                 <br></br>

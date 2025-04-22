@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import TransactionCard from "./TransactionCard";
 import { Transaction } from "@/types/types";
+import EmptyCard from "./EmptyCard";
 
   interface TransactionViewProps {
     transactions: Transaction[]
@@ -29,8 +30,10 @@ const TransactionView = ( { transactions }: TransactionViewProps) => {
         <div className="flex flex-row gap-6 items-center justify-center">
           <FaArrowAltCircleLeft className="w-12 h-12 text-black" onClick={prevTransaction}/>
           <div className="flex mt-10 justify-center">
-            {
-                transactions.map( (transaction, index) => {
+            { 
+              transactions.length === 0 && <EmptyCard></EmptyCard>
+            }
+            { transactions.length > 0 && transactions.map( (transaction, index) => {
                     return (
                         index === currentTransaction && (
                             <TransactionCard key={index} transaction={transactions[index]}></TransactionCard>

@@ -8,3 +8,9 @@ export type Transaction = {
     paymentMethod: string,
     userID: string | undefined
   };
+
+  export type Goal = {
+    _id?: string,
+    amount: string,
+    userID: string
+  }

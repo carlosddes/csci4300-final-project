@@ -17,7 +17,7 @@ const expenseSchema = new Schema<IExpense>({
     amount: { type: String, required: true},
     date: { type: String, required: true},
     paymentMethod: { type: String, required: true},
-    userID: { type:String, required: true, unique: true}
+    userID: { type:String, required: true}
 });
 
 const Expense: Model<IExpense> = mongoose.models.Expense || mongoose.model<IExpense>("Expense", expenseSchema);

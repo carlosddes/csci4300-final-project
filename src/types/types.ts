@@ -3,6 +3,7 @@ export type Transaction = {
     amount: string,
     date: string,
     description: string,
-    imageUrl:  string,
+    imageURL:  string,
     paymentMethod: string,
+    userID: string | undefined
   };

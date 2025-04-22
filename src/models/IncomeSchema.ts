@@ -17,7 +17,7 @@ const incomeSchema = new Schema<Iincome>({
     amount: { type: String, required: true},
     date: { type: String, required: true},
     paymentMethod: { type: String, required: true},
-    userID: { type:String, required: true, unique: true}
+    userID: { type:String, required: true}
 });
 
 const Income: Model<Iincome> = mongoose.models.Income || mongoose.model<Iincome>("Income", incomeSchema);

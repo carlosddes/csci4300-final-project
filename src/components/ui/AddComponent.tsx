@@ -5,11 +5,10 @@ import { useSession } from "next-auth/react";
 
 interface ExpenseProps {
     title: string,
-    addFunction: (transaction: Transaction) => void
     closeFunction: () => void
 }
 
-const AddComponent = ({ title, addFunction, closeFunction }: ExpenseProps) => {
+const AddComponent = ({ title, closeFunction }: ExpenseProps) => {
 
     const session = useSession();
     const [transaction, setTransaction] = useState<Transaction>({
@@ -17,8 +16,9 @@ const AddComponent = ({ title, addFunction, closeFunction }: ExpenseProps) => {
         amount: "",
         date: "",
         description: "",
-        imageUrl: "",
-        paymentMethod: ""
+        imageURL: "",
+        paymentMethod: "",
+        userID: ""
     });
 
     function clearComponent() {
@@ -27,17 +27,25 @@ const AddComponent = ({ title, addFunction, closeFunction }: ExpenseProps) => {
         closeFunction();
     }
 
-    function addTransaction() {
+    async function addTransaction() {
         const newTransaction: Transaction = {
             title: transaction.title,
             amount: transaction.amount,
             date: transaction.date,
             description: transaction.description,
-            imageUrl: transaction.imageUrl,
-            paymentMethod: transaction.paymentMethod
+            imageURL: transaction.imageURL,
+            paymentMethod: transaction.paymentMethod,
+            userID: session.data?.user?.id
         }
-        addFunction(newTransaction);
-        console.log(session.data);
+        const url = `http://localhost:3000/api/${title.toLowerCase()}`
+        const res = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newTransaction)
+        });
+        clearComponent();
     }
 
     return (
@@ -62,7 +70,7 @@ const AddComponent = ({ title, addFunction, closeFunction }: ExpenseProps) => {
                 <br className="mb-6"></br>
                 <label className="text-sm font-semibold">Image URL</label>
                 <br></br>
-                <input type="text" placeholder="Enter image url" onChange={e => setTransaction({...transaction, imageUrl: e.target.value})} className="border border-[#A6BCDA] min-w-[256px] min-h-[36px] max-h-[36px] text-sm rounded-sm p-2" required></input>
+                <input type="text" placeholder="Enter image url" onChange={e => setTransaction({...transaction, imageURL: e.target.value})} className="border border-[#A6BCDA] min-w-[256px] min-h-[36px] max-h-[36px] text-sm rounded-sm p-2" required></input>
                 <br className="mb-6"></br>
                 <label className="text-sm font-semibold">Description</label>
                 <br></br>

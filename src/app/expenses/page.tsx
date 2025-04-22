@@ -5,48 +5,40 @@ import AddComponent from "@/components/ui/AddComponent";
 import { useState, useEffect } from "react"
 import IncomeExpenseView from "@/components/ui/IncomeExpenseView";
 import { Transaction } from "@/types/types";
+import { useSession } from "next-auth/react";
 
-  const initTransactions: Transaction[] = [
-    {
-      title: "Rent",
-      amount: "$750.00",
-      date: "2025-04-11",
-      description: "I paid my monthly rent!",
-      imageURL: "https://www.realestatespreadsheets.com/wp-content/uploads/2024/04/rent-home-pros-cons.jpg",
-      paymentMethod: "Visa 1234",
-      userID: ""
-    },
-    {
-      title: "Groceries",
-      amount: "$154.45",
-      date: "2025-04-10",
-      description: "I bought weekly groceries.",
-      imageURL: "https://hips.hearstapps.com/hmg-prod/images/healthy-groceries-bag-66eaef810acf6.jpg?crop=0.7501082719792118xw:1xh;center,top&resize=1200:*",
-      paymentMethod: "Visa 1234",
-      userID: ""
-    },
-    {
-      title: "Movie",
-      amount: "$20.12",
-      date: "2025-04-09",
-      description: "I went to watch the Minecraft movie with friends.",
-      imageURL: "https://images.techeblog.com/wp-content/uploads/2025/03/01093040/a-minecraft-movie-final-trailer.jpg",
-      paymentMethod: "Visa 1234",
-      userID: ""
-    },
-  ]
+interface TransactionsResponse {
+  Incomes: Transaction[],
+  Expenses: Transaction[]
+}
 
 export default function Home() {
 
+    const session = useSession();
     const [isExpenseVisible, setIsExpenseVisible] = useState(false);
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [expenseTotal, setExpenseTotal] = useState("0.00");
 
     useEffect(() => {
-      if (isExpenseVisible) {
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.body.style.overflow = 'auto';
-      }
-    }, [isExpenseVisible])
+      getUserTransactions();
+    }, [])
+
+    async function getUserTransactions() {
+      const url = `http://localhost:3000/api/transactions/${session.data?.user?.id}`;
+      const res = await fetch(url, {
+        headers: { "Content-Type": "application/json"}
+      });
+      const trans = await res.json() as TransactionsResponse;
+      const expenses = trans.Expenses;
+      await calculateExpenseTotal(expenses);
+      setTransactions(expenses.sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
+    }
+
+    async function calculateExpenseTotal(expenses: Transaction[]) {
+      let sum = 0;
+      expenses.forEach(expense => sum += parseFloat(expense.amount));
+      setExpenseTotal(sum.toFixed(2));
+    }
 
     function toggleExpenseComponent() {
         setIsExpenseVisible(!isExpenseVisible);
@@ -61,7 +53,7 @@ export default function Home() {
           <div className="grid grid-cols-2 gap-12 m-6">
               {/* Text Cards */}
               <div>
-                <TextCard heading="Expenses" number="9450.01" numColor="text-black" />
+                <TextCard heading="Expenses" number={expenseTotal} numColor="text-black" />
               </div>
               {/* Image Cards */}
               <div onClick={toggleExpenseComponent}>
@@ -75,7 +67,7 @@ export default function Home() {
                 { isExpenseVisible && <AddComponent title="Expense" addFunction={handleAddExpense} closeFunction={toggleExpenseComponent}></AddComponent>}
           </div>
             <div>
-                <IncomeExpenseView transactions={initTransactions}/>
+                <IncomeExpenseView title={"Expense"} transactions={transactions}/>
             </div>  
         </div>
       );

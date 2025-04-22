@@ -3,11 +3,12 @@ import { useState } from "react";
 import { Transaction } from "@/types/types";
 
 interface ExpenseProps {
+    title: string,
     editedTransaction: Transaction,
     closeFunction: () => void
 }
 
-const EditComponent = ({ editedTransaction, closeFunction }: ExpenseProps) => {
+const EditComponent = ({ title, editedTransaction, closeFunction }: ExpenseProps) => {
 
     const [transaction, setTransaction] = useState<Transaction>({
         title: editedTransaction.title,
@@ -25,9 +26,19 @@ const EditComponent = ({ editedTransaction, closeFunction }: ExpenseProps) => {
         closeFunction();
     }
 
+    async function handleEditComponent() {
+        const url = title === "Expense" ? `http://localhost:3000/api/expense/${editedTransaction._id}` : `http://localhost:3000/api/income/${editedTransaction._id}`;
+        const res = await fetch(url, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify(transaction)
+        });
+        clearComponent();
+    }
+
     return (
         <div className="flex fixed top-[5vh] left-[40vw] z-1000 justify-center border bg-white h-[640px] w-80 rounded-[10px]">
-            <form onSubmit={e => { e.preventDefault() }} className="relative w-4/5">
+            <form onSubmit={e => { e.preventDefault(); handleEditComponent()}} className="relative w-4/5">
                 <h1 className="font-semibold text-xl text-center mt-6 mb-4">Edit Transaction</h1>
                 <label className="text-sm font-semibold">Title</label>
                 <br></br>

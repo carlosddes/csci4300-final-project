@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react";
 import { Transaction } from "@/types/types";
+import { useSession } from "next-auth/react";
 
 interface ExpenseProps {
     title: string,
@@ -10,6 +11,7 @@ interface ExpenseProps {
 
 const AddComponent = ({ title, addFunction, closeFunction }: ExpenseProps) => {
 
+    const session = useSession();
     const [transaction, setTransaction] = useState<Transaction>({
         title: "",
         amount: "",
@@ -35,6 +37,7 @@ const AddComponent = ({ title, addFunction, closeFunction }: ExpenseProps) => {
             paymentMethod: transaction.paymentMethod
         }
         addFunction(newTransaction);
+        console.log(session.data);
     }
 
     return (

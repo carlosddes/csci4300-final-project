@@ -4,11 +4,17 @@ import ImageCard from "@/components/ui/image-card";
 import { useState, useEffect } from "react";
 import SavingsComponent from "@/components/ui/SavingsComponent";
 import { useSession } from "next-auth/react";
-import { Goal } from "@/types/types";
+import { Goal, Transaction} from "@/types/types";
 
 interface GoalsResponse {
     goal: Goal
 }
+
+interface TransactionsResponse {
+  Incomes: Transaction[],
+  Expenses: Transaction[]
+}
+
 
 export default function Home() {
 
@@ -27,7 +33,52 @@ export default function Home() {
         });
         const goalRes = await res.json() as GoalsResponse;
         setSavingsGoal(parseInt(goalRes.goal.amount).toFixed(2));
+        getUserTransactions(parseInt(goalRes.goal.amount));
     }
+
+    async function getUserTransactions(goal: number) {
+        const url = `http://localhost:3000/api/transactions/${session.data?.user?.id}`;
+        const res = await fetch(url, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+        const Utransactions = await res.json() as TransactionsResponse;
+        const incomes = Utransactions.Incomes;
+        const expenses = Utransactions.Expenses;
+        calculateSumsForEachMonth(incomes, expenses,goal);
+    }
+
+    async function calculateSumsForEachMonth(incomes: Transaction[], expenses: Transaction[], goal: number) {
+        let map = new Map<String, number>();
+        let incomeSum = 0;
+        let expenseSum = 0;
+
+        incomes.forEach(income => {
+            let key = income.date.substring(0, 7);
+            map.set(key, (map.get(key) || 0.00) + parseFloat(income.amount));
+            incomeSum += parseFloat(income.amount);
+        });
+        expenses.forEach(expense => {
+            let key = expense.date.substring(0, 7);
+            map.set(key, (map.get(key) || 0.00) - parseFloat(expense.amount));
+            expenseSum += parseFloat(expense.amount);
+        });
+        
+        let avgMonth = 0;
+
+        for (const [key, value] of map) {
+            map.set(key, value/30);
+            avgMonth += (map.get(key) || 0);
+        }
+        
+        avgMonth /= map.size;
+        
+
+        console.log(`It will take you ${Math.ceil((goal - (incomeSum - expenseSum)) / (avgMonth / map.size))  } days to hit your savings goal!`)
+
+    }
+
     
     function toggleSavingsComponent() {
         setIsSavingsVisible(!isSavingsVisible);

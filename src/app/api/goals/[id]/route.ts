@@ -18,7 +18,7 @@ export async function GET(request: NextRequest, { params }:RouteParams) {
         return NextResponse.json({message: "Goal not found"}, {status: 404});
     }
 
-    return NextResponse.json({goal: goal}, {status: 200});
+    return NextResponse.json({goal}, {status: 200});
 }
 
 export async function PUT(request: NextRequest, { params }:RouteParams) {

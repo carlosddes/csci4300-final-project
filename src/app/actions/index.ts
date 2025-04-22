@@ -19,5 +19,6 @@ export async function doCredentialLogin(formData: FormData): Promise<any> {
         return response;
     } catch (err: any) {
         console.error(err);
+        return {error: {message: "Invalid credentials"}};
     }
 }

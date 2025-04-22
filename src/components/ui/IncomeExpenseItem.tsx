@@ -5,10 +5,11 @@ import ViewTransactionComponent from "./ViewTransactionComponent";
 import ConfirmDelete from "./ConfirmDelete";
 
 interface IncomeExpenseItemProps {
+    title: string,
     transaction: Transaction;
 };
 
-const IncomeExpenseItem = ( {transaction}: IncomeExpenseItemProps) => {
+const IncomeExpenseItem = ( { title, transaction}: IncomeExpenseItemProps) => {
 
     const[isEditVisible, setIsEditVisible] = useState(false);
     const[isViewVisible, setIsViewVisible] = useState(false);
@@ -51,9 +52,9 @@ const IncomeExpenseItem = ( {transaction}: IncomeExpenseItemProps) => {
             </div>
             <div>
                 { (isEditVisible || isViewVisible || isDeleteVisible) && <div className="bg-black opacity-75 w-screen h-screen top-0 left-0 fixed"></div> }
-                { isEditVisible && <EditComponent editedTransaction={transaction} closeFunction={toggleEditComponent}/> }
+                { isEditVisible && <EditComponent title={title} editedTransaction={transaction} closeFunction={toggleEditComponent}/> }
                 { isViewVisible && <ViewTransactionComponent transaction={transaction} closeFunction={toggleViewComponent}/>}
-                { isDeleteVisible && <ConfirmDelete transaction={transaction} closeFunction={toggleDeleteComponent}/>}
+                { isDeleteVisible && <ConfirmDelete title={title} transaction={transaction} closeFunction={toggleDeleteComponent}/>}
             </div>
         </div>
     );

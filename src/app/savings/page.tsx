@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import SavingsComponent from "@/components/ui/SavingsComponent";
 import { useSession } from "next-auth/react";
 import { Goal, Transaction} from "@/types/types";
+import { Chart } from "react-google-charts";
 
 interface GoalsResponse {
     goal: Goal
@@ -19,8 +20,11 @@ interface TransactionsResponse {
 export default function Home() {
 
     const session = useSession();
+    const [data, setData] = useState<Array<any>>([['Month', 'Amount']]);
+    const [isLoading, setIsLoading] = useState(true);
     const [isSavingsVisible, setIsSavingsVisible] = useState(false);
     const [savingsGoal, setSavingsGoal] = useState("0.00");
+    const [savingsEstimate, setSavingsEstimate] = useState("");
 
     useEffect(() => {
         getUserSavingsGoal();
@@ -46,7 +50,7 @@ export default function Home() {
         const Utransactions = await res.json() as TransactionsResponse;
         const incomes = Utransactions.Incomes;
         const expenses = Utransactions.Expenses;
-        calculateSumsForEachMonth(incomes, expenses,goal);
+        await calculateSumsForEachMonth(incomes, expenses, goal);
     }
 
     async function calculateSumsForEachMonth(incomes: Transaction[], expenses: Transaction[], goal: number) {
@@ -73,16 +77,40 @@ export default function Home() {
         }
         
         avgMonth /= map.size;
-        
-
-        console.log(`It will take you ${Math.ceil((goal - (incomeSum - expenseSum)) / (avgMonth / map.size))  } days to hit your savings goal!`)
-
+        setSavingsEstimate(`At your current rate, it will take ${Math.ceil((goal - (incomeSum - expenseSum)) / avgMonth)} days to hit your savings goal!`);
+        await fetchData(map);
     }
+
+    async function fetchData(map: Map<String, number>) {
+        try {
+            let months = [];
+            for (const [key, value] of map) {
+                months.push([key, {v: parseFloat(value.toFixed(2)), f: `$${value.toFixed(2)}`}]);
+            }
+            months.sort((a,b) => new Date(a[0] as string).getTime() - new Date(b[0] as string).getTime());
+          setData([
+            ['Month', 'Amount'],
+            ...months
+          ]);
+        } catch (error) {
+          console.error('Error fetching chart data:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      }
 
     
     function toggleSavingsComponent() {
         setIsSavingsVisible(!isSavingsVisible);
     }
+
+    const options = {
+        title: "Average daily savings per month",
+        backgroundColor: 'transparent',
+        legend: { position: 'bottom' },
+        pieSliceText: 'value', // Show actual dollar values
+        colors: ['#155eef', '#ea4335'],
+      };
     
     return (
         <div>
@@ -97,8 +125,19 @@ export default function Home() {
                         <h2 className="text-lg font-semibold text-gray-900">Set Savings Goal</h2>
                     </ImageCard>
                 </div>
-                <div className="flex flex-row gap-6"> </div>
             </div>
+                <div>
+                    <p className="w-screen text-2xl font-semibold text-center">{savingsEstimate}</p>
+                </div>
+                <div className="flex justify-center">
+                    {!isLoading && <Chart
+                        chartType="LineChart"
+                        data={data}
+                        options={options}
+                        width={'600px'}
+                        height={'500px'}
+                    />}
+                </div>
             { isSavingsVisible && <div className="bg-black opacity-75 w-screen h-screen top-0 left-0 fixed"></div>}
             { isSavingsVisible && <SavingsComponent closeFunction={toggleSavingsComponent}></SavingsComponent>}
         </div>

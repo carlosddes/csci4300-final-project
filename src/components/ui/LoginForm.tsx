@@ -53,25 +53,16 @@ function LoginForm() {
           <label className="text-gray-600 text-sm">Password</label>
           <div className="relative">
             <input
+              id="passwordBox"
               name="password"
               type="password"
               placeholder="***********"
               className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-            <span className="absolute right-3 top-3 text-gray-500 cursor-pointer">
-              👁
-            </span>
           </div>
         </div>
 
         <div className="flex justify-between items-center text-sm text-gray-600 mb-6">
-          <label className="flex items-center">
-            <input type="checkbox" className="mr-2" />
-            Remember me
-          </label>
-          <a href="#" className="text-blue-500 hover:underline">
-            Forgot Password?
-          </a>
         </div>
         <p className='text-red-500 text-center mb-3'>{error}</p>
         <button

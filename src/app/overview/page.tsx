@@ -29,7 +29,6 @@ export default function OverviewPage() {
 
     useEffect(() => {
       getUserTransactions();
-      console.log(session.data);
     }, [balance, expenses])
 
     async function getUserTransactions() {
@@ -108,7 +107,7 @@ export default function OverviewPage() {
             { (isIncomeVisible || isExpenseVisible || isSavingsVisible )&& <div className="bg-black opacity-75 w-screen h-screen top-0 left-0 fixed"></div>}
               { isIncomeVisible && <AddComponent title="Income" addFunction={getUserTransactions} closeFunction={toggleIncomeComponent}></AddComponent>}
               { isExpenseVisible && <AddComponent title="Expense" addFunction={getUserTransactions} closeFunction={toggleExpenseComponent}></AddComponent>}
-              { isSavingsVisible && <SavingsComponent closeFunction={toggleSavingsComponent}></SavingsComponent>}
+              { isSavingsVisible && <SavingsComponent addFunction={getUserTransactions} closeFunction={toggleSavingsComponent}></SavingsComponent>}
         </div>
       </div>
     );

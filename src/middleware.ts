@@ -10,7 +10,7 @@ const middleware = async(request: NextRequest) => {
     const isAuthenticated = !!session?.user;
     console.log(isAuthenticated, pathname);
 
-    const publicPaths = ["/", "/login"];
+    const publicPaths = ["/", "/login", "/signup"];
     const blockedForLoggedIn = ["/login", "/signup"];
 
     if (!isAuthenticated && !publicPaths.includes(pathname)) {
@@ -30,7 +30,9 @@ export const config = {
         "/expenses",
         "/income",
         "/login",
-        "/signup"
+        "/signup",
+        "/savings",
+        "/chat"
     ]
 }
 

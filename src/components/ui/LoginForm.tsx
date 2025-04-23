@@ -21,14 +21,12 @@ function LoginForm() {
       console.log(response);
 
       if (response?.error) {      
-        console.error(response.error);
         setError(response.error.message || "An error occurred");
       } else {
         router.push("/overview");
       }
     } catch (e: any) {
-      console.error(e);
-      setError("Check your Credentials");
+      setError("Invalid credentials");
     }
 
   }
@@ -75,7 +73,7 @@ function LoginForm() {
             Forgot Password?
           </a>
         </div>
-        <p className='text-blue-500 hover:underline'>{error}</p>
+        <p className='text-red-500 text-center mb-3'>{error}</p>
         <button
             type="submit"
             className="block w-full text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"

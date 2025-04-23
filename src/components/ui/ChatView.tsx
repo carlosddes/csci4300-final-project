@@ -3,16 +3,12 @@ import MessageBubble from "./MessageBubble";
 import { useState, useEffect } from "react";
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
 
 const ChatView = () => {
 
     const [messages, setMessages] = useState([{ sender: "ai", content: "Hello, I am your personal AI financial advisor. Please feel free to ask me about anything you would like."}]);
     const [currentMessage, setCurrentMessage] = useState("");
-
-    useEffect(() => {
-
-    }, [messages]);
 
     const sendMessage = async () => {
         clearComponent();

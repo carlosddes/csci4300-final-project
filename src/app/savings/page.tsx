@@ -35,9 +35,13 @@ export default function Home() {
         const res = await fetch(url, {
             headers: { "Content-Type": "application/json"}
         });
-        const goalRes = await res.json() as GoalsResponse;
-        setSavingsGoal(parseInt(goalRes.goal.amount).toFixed(2));
-        getUserTransactions(parseInt(goalRes.goal.amount));
+        if (res.status === 200) {
+            const goalRes = await res.json() as GoalsResponse;
+            setSavingsGoal(parseInt(goalRes.goal.amount).toFixed(2));
+            getUserTransactions(parseInt(goalRes.goal.amount));
+        } else {
+            setSavingsGoal("0.00");
+        }
     }
 
     async function getUserTransactions(goal: number) {

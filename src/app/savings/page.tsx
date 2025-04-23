@@ -28,7 +28,7 @@ export default function Home() {
 
     useEffect(() => {
         getUserSavingsGoal();
-    }, []);
+    }, [savingsGoal]);
 
     async function getUserSavingsGoal() {
         const url = `http://localhost:3000/api/goals/${session.data?.user?.id}`;
@@ -139,7 +139,7 @@ export default function Home() {
                     />}
                 </div>
             { isSavingsVisible && <div className="bg-black opacity-75 w-screen h-screen top-0 left-0 fixed"></div>}
-            { isSavingsVisible && <SavingsComponent closeFunction={toggleSavingsComponent}></SavingsComponent>}
+            { isSavingsVisible && <SavingsComponent addFunction={getUserSavingsGoal} closeFunction={toggleSavingsComponent}></SavingsComponent>}
         </div>
     );
 };

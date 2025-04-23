@@ -10,8 +10,8 @@ const middleware = async(request: NextRequest) => {
     const isAuthenticated = !!session?.user;
     console.log(isAuthenticated, pathname);
 
-    const publicPaths = ["/", "/login", "/signup"];
-    const blockedForLoggedIn = ["/login", "/signup"];
+    const publicPaths = ["/", "/login", "/register"];
+    const blockedForLoggedIn = ["/login", "/register"];
 
     if (!isAuthenticated && !publicPaths.includes(pathname)) {
         return NextResponse.redirect(new URL("/login", request.url));
@@ -30,7 +30,7 @@ export const config = {
         "/expenses",
         "/income",
         "/login",
-        "/signup",
+        "/register",
         "/savings",
         "/chat"
     ]

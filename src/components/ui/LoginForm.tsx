@@ -71,14 +71,10 @@ function LoginForm() {
             >
             Login
         </button>
-
-        <p className="text-center text-sm mt-4">
-          Don’t have an account?{' '}
-          <a href="#" className="text-blue-600 font-medium hover:underline">
-            Register
-          </a>
-        </p>
-      </form>
+        <div className="text-center">
+          <Link className="text-blue-600 font-medium hover:underline text-sm mt-4" href={"/register"}>Don’t have an account?{' '}</Link>   
+         </div>   
+        </form>
     </div>
   );
 }

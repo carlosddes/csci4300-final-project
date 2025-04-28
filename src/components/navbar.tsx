@@ -13,6 +13,7 @@ const navigation = [
   { name: 'Incomes', href: '/income', current: false },
   { name: 'Expenses', href: '/expenses', current: false },
   { name: 'Savings', href: '/savings', current: false },
+  { name: 'AI Advisor', href: '/chat', current: false},
 ]
 
 function classNames(...classes: string[]) {

@@ -3,10 +3,11 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 
 interface SavingsProps {
-    closeFunction: () => void
+    closeFunction: () => void,
+    addFunction: () => void
 }
 
-const SavingsComponent = ({ closeFunction }: SavingsProps) => {
+const SavingsComponent = ({ addFunction, closeFunction }: SavingsProps) => {
 
     const session = useSession();
     const [goal, setGoal] = useState("");
@@ -25,6 +26,7 @@ const SavingsComponent = ({ closeFunction }: SavingsProps) => {
             body: JSON.stringify({amount: goal, userID: session.data?.user?.id})
         });
         clearComponent();
+        addFunction();
     }
     
 

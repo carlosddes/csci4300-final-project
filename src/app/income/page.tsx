@@ -44,10 +44,6 @@ export default function Home() {
         setIsIncomeVisible(!isIncomeVisible);
     }
 
-    function handleAddIncome() {
-        setIsIncomeVisible(false);
-    }
-
     return (
         <div>
           <div className="grid grid-cols-2 gap-12 m-6">
@@ -64,7 +60,7 @@ export default function Home() {
               <div className="flex flex-row gap-6">
               </div>
               { isIncomeVisible && <div className="bg-black opacity-75 w-screen h-screen top-0 left-0 fixed"></div>}
-                { isIncomeVisible && <AddComponent title="Income" addFunction={handleAddIncome} closeFunction={toggleIncomeComponent}></AddComponent>}
+                { isIncomeVisible && <AddComponent title="Income" addFunction={getUserTransactions} closeFunction={toggleIncomeComponent}></AddComponent>}
           </div>
             <div>
                 <IncomeExpenseView title="Income" transactions={transactions}/>

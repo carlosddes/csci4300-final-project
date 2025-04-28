@@ -11,18 +11,14 @@ interface RouteParams {
 export async function GET(request: NextRequest, { params }:RouteParams) {
     const { id } = await params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return NextResponse.json({message: "Invalid ID format"}, {status: 400});
-    }
-
     await connectMongoDB();
-    const goal = await Goal.findOne({ _id: id });
+    const goal = await Goal.findOne({ userID: id });
 
     if (!goal) {
         return NextResponse.json({message: "Goal not found"}, {status: 404});
     }
 
-    return NextResponse.json({goal: goal}, {status: 200});
+    return NextResponse.json({goal}, {status: 200});
 }
 
 export async function PUT(request: NextRequest, { params }:RouteParams) {
